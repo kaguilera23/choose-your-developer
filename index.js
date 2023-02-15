@@ -1,4 +1,8 @@
 const inquirer = require("inquirer");
+const fs = require("fs")
+const Manager = require("./lib/Manager")
+const Engineer = require("./lib/Engineer")
+const Intern = require("./lib/Intern")
 
 const initQuestions = [
     {
@@ -48,7 +52,7 @@ const engineerQuestions = [
     {
         type: "input",
         name: "github",
-        message: "What is the engineer's gitHub username?"
+        message: "What is the engineer's GitHub username?"
     }
 ]
 
@@ -88,7 +92,7 @@ function init() {
         } else if(answers.choose == "Add An Intern") {
             internQuestions();
         } else {
-            return team;
+            createTeam(team);
         }
         })
     } else {
@@ -98,11 +102,10 @@ function init() {
         } else if(answers.choose == "Add An Intern") {
             addIntern();
         } else {
-            console.log(team);
+            createTeam(team);
         }           
         })
     }
-    
 }
 
 function addEngineer() {
@@ -116,6 +119,35 @@ function addIntern() {
     inquirer.prompt(internQuestions).then((answers) => {
         team.push(answers);
         init();
+    })
+}
+
+function createTeam(team) {
+    console.log(team)
+
+    const createEmployees = team.map((member) => {
+        if (member.manager) {
+            const name = member.manager
+            const id = member.managerId
+            const email = member.managerEmail
+            const officeNumber = member.number
+            const manager = new Manager(name, id, email, officeNumber)
+            manager.getRole()
+        } else if (member.engineer) {
+            const name = member.engineer
+            const id = member.engineerId
+            const email = member.engineerEmail
+            const github = member.github
+            const engineer = new Engineer (name, id, email, github)
+            engineer.getRole()
+        } else {
+            const name = member.intern
+            const id = member.internId
+            const email = member.internEmail
+            const school = member.school
+            const intern = new Intern (name, id, email, school)
+            intern.getRole()
+        }
     })
 }
 
