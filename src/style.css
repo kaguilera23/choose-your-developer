@@ -1,0 +1,29 @@
+* {
+    background-color: antiquewhite;
+}
+
+#title {
+    background-color: pink;
+    margin: 0px;
+    height: 200px;
+    font-size: 70px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#employee-section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px;
+}
+
+#card-title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+}
+
