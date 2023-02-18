@@ -1,9 +1,10 @@
 const inquirer = require("inquirer");
 const fs = require("fs")
-const Employee = require("./lib/Employee")
 const Manager = require("./lib/Manager")
 const Engineer = require("./lib/Engineer")
 const Intern = require("./lib/Intern")
+const helloTeam = require("./src/template-helper")
+
 
 const initQuestions = [
     {
@@ -123,7 +124,6 @@ function addIntern() {
 }
 
 function createTeam(team) {
-    console.log(team)
     const createMembers = new Promise((resolve, reject) => {
 
         if (team.length > 0) {
@@ -153,16 +153,18 @@ function createTeam(team) {
             })
             resolve(createEmployees);
         } else {
-            reject("no")
+            reject("Unable to Create Your Team. Please Try Again!")
         }
-
-
     })
 
     createMembers.then((data) => {
-        console.log(data)
+        const hello = helloTeam(data)
+        fs.writeFile(
+            "teamFile.html", hello, err => {
+                console.log(err)
+            }
+        )
     })
 }
-
 
 init(); 
