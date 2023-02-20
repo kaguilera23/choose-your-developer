@@ -4,6 +4,9 @@ const Manager = require("./lib/Manager")
 const Engineer = require("./lib/Engineer")
 const Intern = require("./lib/Intern")
 const helloTeam = require("./src/template-helper")
+const Employee = require("./lib/Employee")
+
+
 
 
 const initQuestions = [
@@ -11,15 +14,15 @@ const initQuestions = [
         type: "input",
         name: "manager",
         message: "What is the Team Manager's name?"
-    }, 
+    },
     {
         type: "input",
         name: "managerId",
         message: "What is the manager's ID?"
-    }, 
+    },
     {
-        type: "input", 
-        name: "managerEmail", 
+        type: "input",
+        name: "managerEmail",
         message: "What is the manager's email address?"
     },
     {
@@ -28,27 +31,28 @@ const initQuestions = [
         message: "What is the manager's office number?"
     },
     {
-        type: "list", 
+        type: "list",
         name: "choose",
         message: "How would you like to proceed?",
         choices: ["Add An Engineer", "Add An Intern", "Finish Building My Team"]
     }
 ]
 
+
 const engineerQuestions = [
     {
         type: "input",
         name: "engineer",
         message: "What is the engineer's name?"
-    }, 
+    },
     {
         type: "input",
         name: "engineerId",
         message: "What is the engineers's ID?"
-    }, 
+    },
     {
-        type: "input", 
-        name: "engineerEmail", 
+        type: "input",
+        name: "engineerEmail",
         message: "What is the engineers's email address?"
     },
     {
@@ -58,20 +62,21 @@ const engineerQuestions = [
     }
 ]
 
+
 const internQuestions = [
     {
         type: "input",
         name: "intern",
         message: "What is the intern's name?"
-    }, 
+    },
     {
         type: "input",
         name: "internId",
         message: "What is the intern's ID?"
-    }, 
+    },
     {
-        type: "input", 
-        name: "internEmail", 
+        type: "input",
+        name: "internEmail",
         message: "What is the intern's email address?"
     },
     {
@@ -81,9 +86,12 @@ const internQuestions = [
     }
 ]
 
+
 const team = [];
 
+
 function init() {
+
 
     if (team.length === 0) {
         inquirer.prompt(initQuestions).then((answers) => {
@@ -104,10 +112,11 @@ function init() {
             addIntern();
         } else {
             createTeam(team);
-        }           
+        }          
         })
     }
 }
+
 
 function addEngineer() {
     inquirer.prompt(engineerQuestions).then((answers) => {
@@ -116,6 +125,7 @@ function addEngineer() {
     })
 }
 
+
 function addIntern() {
     inquirer.prompt(internQuestions).then((answers) => {
         team.push(answers);
@@ -123,13 +133,15 @@ function addIntern() {
     })
 }
 
+
 function createTeam(team) {
     const createMembers = new Promise((resolve, reject) => {
+
 
         if (team.length > 0) {
             const createEmployees = team.map((member) => {
                 if (member.manager) {
-                    const name = member.manager
+                    let name = member.manager
                     const id = member.managerId
                     const email = member.managerEmail
                     const officeNumber = member.number
@@ -157,14 +169,47 @@ function createTeam(team) {
         }
     })
 
+
     createMembers.then((data) => {
-        const hello = helloTeam(data)
-        fs.writeFile(
-            "teamFile.html", hello, err => {
-                console.log(err)
+        const y = data.map((z) => {
+            if (z.getRole() === "Manager") {
+                const object = {
+                    role: z.getRole(),
+                    name: z.getName(),
+                    id: z.getId(),
+                    email: z.getEmail(),
+                    officeNumber: z.getOfficeNumber()                  
+                }
+                return object
+            } else if (z.getRole() === "Engineer") {
+                const object = {
+                    role: z.getRole(),
+                    name: z.getName(),
+                    id: z.getId(),
+                    email: z.getEmail(),
+                    github: z.getGithub()                  
+                }
+                return object
+            } else if (z.getRole() === "Intern") {
+                const object = {
+                    role: z.getRole(),
+                    name: z.getName(),
+                    id: z.getId(),
+                    email: z.getEmail(),
+                    school: z.getSchool()                  
+                }
+                return object                
             }
-        )
+        })
+        const hello = helloTeam(y);
+        fs.writeFile("./dist/teamFile.html", hello, (err) => {
+            console.log(err)
+        })
+
+
+       
     })
 }
 
-init(); 
+
+init();
