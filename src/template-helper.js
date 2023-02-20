@@ -52,7 +52,7 @@ const helloTeam = function helloTeam (teamData) {
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">ID: <span style="background-color: white;" id = "manager-id">${a[1].id}</span></li>
                             <li class="list-group-item">Email: <span style="background-color: white;">${a[1].email}</span></li>
-                            <li class="list-group-item"><a href="https://github.com/${a[1].github}" style="text-decoration: none;">GitHub: <span style="background-color: white;">${a[1].github}</span></a></li>
+                            <li class="list-group-item"><a href="https://github.com/${a[1].github} target="_blank"" style="text-decoration: none;">GitHub: <span style="background-color: white;">${a[1].github}</span></a></li>
                         </ul>
                       </div>
                     </div>
